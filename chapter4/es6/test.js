@@ -1,5 +1,6 @@
 'use strict';
 
-const arr = [1, 2, 3];
-arr[0] = 4;
-console.log(arr);
+const obj = {b:2, c: 3, d: 4};
+const {a, b, c} = obj;
+console.log(a);
+console.log(b);

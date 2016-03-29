@@ -10,27 +10,43 @@ function randFace() {
 
 var fund = 50;
 
+let round =0;
 while (fund > 0 && fund < 100) {
-	//bet
-	let face = randFace();
-	let bet = {face: face, price: rand(1, 5)};
-	console.log("bet: " + bet.face + " : " + bet.price);
-	//fund-
-	fund -= bet.price;
-	console.log("sub price: " + bet.price + ", left fund: " + fund);
-	for (let i=0; i < 3; i++) {
-		let tmpFace = randFace();
-
-		if (tmpFace === bet.face) {
-			fund += bet.price;
-			console.log("bingo; add prize: " + bet.face + "; fund: " + fund );
-		} else {
-			console.log("sad; " + tmpFace + " fund: " + fund);
+	round++;
+	let bets = {crown: 0, anchor: 0, heart: 0, spade: 0, club: 0, diamond: 0};
+	let totalBet = rand(1, fund);
+	fund -= totalBet;
+	if (totalBet == 7) {
+		totalBet = fund;
+		bets.heart = totalBet;
+	} else {  //distribute the totalBet
+		let remain = totalBet;
+		do {
+			let tmpBet = rand(1, remain);
+			let tmpFace = randFace();
+			bets[tmpFace] = tmpBet;
+			remain -= tmpBet;
+		} while(remain > 0);
+	}
+	console.log("round: " + round);
+	console.log("\ttotalBet: " + totalBet);
+	for (let p in bets) {
+		if (bets.hasOwnProperty(p)) {
+			console.log('\t bets.' + p + " : " + bets[p]);
 		}
 	}
 
+	let prize = 0;
+	for (let i=0; i < 7; i++) {
+		let dieFace = randFace();
+		prize += bets[dieFace];
+		console.log( i + ": dieface: " + dieFace + " the prize:" + bets[dieFace] + " the round prize: " + prize );
+	}
+
+	fund += prize;
+	console.log("after round: " + round + ", fund: " + fund);
 	//iterator 3
 }
 
-console.log("*******************");
+console.log("*********over**********");
 console.log("fund: " + fund);
